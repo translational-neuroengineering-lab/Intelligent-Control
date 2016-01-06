@@ -10,11 +10,10 @@
 
 class mex_model_wrapper {
 
-private:
-
 public:
 	mex_model_wrapper();
 	virtual ~mex_model_wrapper();
+	void mex_in_silico_model();
 };
 
 #endif /* MEXMODELWRAPPER_H_ */
