@@ -39,25 +39,25 @@ Population::~Population() {
 
 void Population::update_ode() {
 
-	double afferent_input = 0;
-	double p = Noise_Generator::gaussian();
-
-	for(int c1 = 0; c1 < afferents.size(); c1++){
-		afferent_input += this->get_afferents()[c1]->get_v()  * this->get_afferent_weight()[c1];
-//		printf("Afferent input = %.4f(v) * %.4f(c)\n", this->get_afferents()[c1]->get_v(), this->get_afferent_weight()[c1]);
-	}
-
-	dv 	= i;
-    di 	= W*w*(Sigma::spike_density(afferent_input) + this->get_noise_weight()*p) - 2*w*i - w*w*v;
-
-    printf("------\np = %f\n", this->get_noise_weight()*p);
-    printf("Sigma::spike_density(%f) = %f\n", afferent_input, Sigma::spike_density(afferent_input));
-    printf("v = %f\n", v);
-    printf("i = %f\n", i);
-    printf("dv = %f\n", dv);
-    printf("di = %f\n", di);
-    printf("A = %f\n", W);
-    printf("a = %f\n", w);
+//	double afferent_input = 0;
+//	double p = this->get_noise_afferent()->get_noise() *this->get_noise_afferent_weight();
+//
+//	for(int c1 = 0; c1 < afferents.size(); c1++){
+//		afferent_input += this->get_afferents()[c1]->get_v()  * this->get_afferent_weight()[c1];
+////		printf("Afferent input = %.4f(v) * %.4f(c)\n", this->get_afferents()[c1]->get_v(), this->get_afferent_weight()[c1]);
+//	}
+//
+//	dv 	= i;
+//    di 	= W*w*(Sigma::spike_density(afferent_input) + this->get_noise_weight()*p) - 2*w*i - w*w*v;
+//
+//    printf("------\np = %f\n", this->get_noise_weight()*p);
+//    printf("Sigma::spike_density(%f) = %f\n", afferent_input, Sigma::spike_density(afferent_input));
+//    printf("v = %f\n", v);
+//    printf("i = %f\n", i);
+//    printf("dv = %f\n", dv);
+//    printf("di = %f\n", di);
+//    printf("A = %f\n", W);
+//    printf("a = %f\n", w);
 }
 
 void Population::update_state(double dt) {

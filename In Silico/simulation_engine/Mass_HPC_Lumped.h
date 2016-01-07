@@ -9,6 +9,7 @@
 #define MASS_HPC_LUMPED_H_
 
 #include "Mass.h"
+#include "NoiseGenerator.h"
 
 class Mass_HPC_Lumped : public Mass {
 
@@ -23,6 +24,8 @@ class Mass_HPC_Lumped : public Mass {
 	std::vector<Mass_HPC_Lumped *> 	lateral_afferents;
 	std::vector<double> 			lateral_afferent_weight;
 
+	Noise_Generator 				*noise_afferent;
+	double 							noise_afferent_weight;
 public:
 	Mass_HPC_Lumped();
 	virtual ~Mass_HPC_Lumped();
@@ -70,8 +73,11 @@ public:
 	std::vector<Mass_HPC_Lumped *>& get_lateral_afferents();
 	std::vector<double> get_lateral_afferent_weight();
 
-	void add_lateral_afferent(Mass_HPC_Lumped* lateral_afferent, double lateral_afferent_weight);
+	Noise_Generator* get_noise_afferent();
+	double get_noise_afferent_weight();
 
+	void add_lateral_afferent(Mass_HPC_Lumped* lateral_afferent, double lateral_afferent_weight);
+	void add_noise_afferent(Noise_Generator* noise_afferent, double noise_afferent_weight);
 };
 
 

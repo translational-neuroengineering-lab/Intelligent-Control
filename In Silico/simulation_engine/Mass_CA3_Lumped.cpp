@@ -6,6 +6,7 @@
  */
 
 #include "Mass_CA3_Lumped.h"
+#include "mex.h"
 
 Mass_CA3_Lumped::Mass_CA3_Lumped() {
     v_Pyr 	= 0;
@@ -38,7 +39,7 @@ Mass_CA3_Lumped::~Mass_CA3_Lumped() {
 
 void Mass_CA3_Lumped::update_ode(){
 	double afferent_input = 0;
-	double p = Noise_Generator::gaussian();
+	double p = this->get_noise_afferent()->get_noise()*this->get_noise_afferent_weight();
 	double stimulation = this->get_stimulation();
 
 	double A = this->get_A();
@@ -98,8 +99,8 @@ void Mass_CA3_Lumped::update_ode(){
 }
 
 void Mass_CA3_Lumped::update_state(double dt){
-
-	v_Pyr 	+= this->get_stimulation() +dv_Pyr*dt;
+mexPrintf("stimulation = %f\n", this->get_stimulation());
+	v_Pyr 	+= this->get_stimulation() + dv_Pyr*dt;
 	i_Pyr 	+= di_Pyr*dt;
 	v_E 	+= dv_E*dt;
 	i_E 	+= di_E*dt;

@@ -9,7 +9,7 @@
 
 
 Mass_HPC_Lumped::Mass_HPC_Lumped() {
-
+	stimulation = 0;
 }
 
 Mass_HPC_Lumped::~Mass_HPC_Lumped() {
@@ -42,6 +42,14 @@ std::vector<double> Mass_HPC_Lumped::get_lateral_afferent_weight(){
 	return this->lateral_afferent_weight;
 }
 
+Noise_Generator* Mass_HPC_Lumped::get_noise_afferent(){
+	return this->noise_afferent;
+}
+
+double Mass_HPC_Lumped::get_noise_afferent_weight(){
+
+}
+
 // Setters
 void Mass_HPC_Lumped::set_A(double A) {this->A = A;}
 void Mass_HPC_Lumped::set_B(double B) {this->B = B;}
@@ -70,8 +78,14 @@ void Mass_HPC_Lumped::set_lateral_afferent_weight(std::vector<double> lateral_af
 }
 
 void Mass_HPC_Lumped::add_lateral_afferent(Mass_HPC_Lumped* lateral_afferent, double lateral_afferent_weight){
-
+	// TODO - Initialize vector if not created
 	this->lateral_afferents.push_back(lateral_afferent);
 	this->lateral_afferent_weight.push_back(lateral_afferent_weight);
 
+}
+
+void Mass_HPC_Lumped::add_noise_afferent(Noise_Generator* noise_afferent, double noise_afferent_weight){
+	// TODO - generalize into vector
+	this->noise_afferent = noise_afferent;
+	this->noise_afferent_weight = noise_afferent_weight;
 }

@@ -43,7 +43,7 @@ Mass_CA1_Lumped::~Mass_CA1_Lumped() {
 
 void Mass_CA1_Lumped::update_ode(){
 	double afferent_input = 0;
-	double p = Noise_Generator::gaussian();
+	double p = this->get_noise_afferent()->get_noise() *this->get_noise_afferent_weight();
 	double stimulation = this->get_stimulation();
 
 	double A = this->get_A();
