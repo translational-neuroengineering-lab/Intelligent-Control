@@ -47,7 +47,7 @@ Noise_Generator* Mass_HPC_Lumped::get_noise_afferent(){
 }
 
 double Mass_HPC_Lumped::get_noise_afferent_weight(){
-
+	return this->noise_afferent_weight;
 }
 
 // Setters

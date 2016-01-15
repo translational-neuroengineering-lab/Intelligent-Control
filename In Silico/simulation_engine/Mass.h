@@ -26,7 +26,7 @@ public:
 	void 						update_ode();
 	void 						update_state(double dt);
 	std::vector<Population *> 	get_populations();
-	double 						get_LFP();
+	double 						get_lfp();
 };
 
 #endif /* MASS_H_ */

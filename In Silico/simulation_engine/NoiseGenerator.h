@@ -11,6 +11,7 @@
 #include <cmath>
 #include <stdlib.h>
 #include <stdio.h>
+#include "mex.h"
 
 class Noise_Generator {
 	double m;

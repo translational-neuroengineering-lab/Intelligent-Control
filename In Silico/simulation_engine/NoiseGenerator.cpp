@@ -32,7 +32,7 @@ void Noise_Generator::set_coeff_mult(double coeff_mult){
 }
 
 void Noise_Generator::set_noise(double noise){
-	this->noise = noise;
+ 	this->noise = noise;
 }
 
 double Noise_Generator::get_m(){
@@ -57,8 +57,8 @@ void Noise_Generator::update_gaussian(){
     double rand2;
     double pi = 3.141592653589793238462643383;
 
-    rand1 = (float)rand()/(float)(RAND_MAX);
-    rand2 = (float)rand()/(float)(RAND_MAX);
+    rand1 = (double)rand()/(double)(RAND_MAX + 1);
+    rand2 = (double)rand()/(double)(RAND_MAX + 1);
     gauss = sigma * sqrt(-2.0*log(1.0-rand1)) * cos(2.0*pi*rand2)+m;
 
     this->set_noise(coeff_mult*gauss);
