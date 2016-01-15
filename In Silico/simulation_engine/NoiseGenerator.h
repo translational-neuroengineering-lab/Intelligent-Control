@@ -11,12 +11,14 @@
 #include <cmath>
 #include <stdlib.h>
 #include <stdio.h>
+#include "mex.h"
 
 class Noise_Generator {
-	static double m;
-	static double sigma;
-	static double coeff_mult;
+	double m;
+	double sigma;
+	double coeff_mult;
 
+	double noise;
 public:
 	Noise_Generator();
 	Noise_Generator(double m, double sigma, double coeff_mult);
@@ -25,12 +27,14 @@ public:
 	void set_m(double m);
 	void set_sigma(double sigma);
 	void set_coeff_mult(double coeff_mult);
-
+	void set_noise(double noise);
 	double get_m();
 	double get_sigma();
 	double get_coeff_mult();
 
-	static double gaussian();
+	void update_gaussian();
+
+	double get_noise();
 };
 
 #endif /* NOISEGENERATOR_H_ */

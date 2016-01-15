@@ -38,6 +38,9 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.287601628" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver"/>
 							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.858682076" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
+								<option id="gnu.both.asm.option.include.paths.536582602" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/Applications/MATLAB_R2015b.app/extern/include"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.538140229" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>

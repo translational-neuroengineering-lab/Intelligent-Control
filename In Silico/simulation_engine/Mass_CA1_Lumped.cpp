@@ -43,7 +43,7 @@ Mass_CA1_Lumped::~Mass_CA1_Lumped() {
 
 void Mass_CA1_Lumped::update_ode(){
 	double afferent_input = 0;
-	double p = Noise_Generator::gaussian();
+	double p = this->get_noise_afferent()->get_noise() * this->get_noise_afferent_weight();
 	double stimulation = this->get_stimulation();
 
 	double A = this->get_A();
@@ -63,11 +63,13 @@ void Mass_CA1_Lumped::update_ode(){
 	double C7 = this->get_C7();
 
 	for(int c1 = 0; c1 < this->get_schaffer_afferents().size(); c1++){
-		afferent_input += schaffer_afferents[c1]->get_schaffer_v()  * this->get_schaffer_afferent_weight()[c1];
+		afferent_input += this->schaffer_afferents[c1]->get_schaffer_v()  * this->get_schaffer_afferent_weight()[c1];
 	}
 
 	for(int c1 = 0; c1 < this->get_lateral_afferents().size(); c1++){
-		afferent_input += lateral_afferents[c1]->get_lateral_v()  * this->get_lateral_afferent_weight()[c1];
+//             mexPrintf("afferent_input = %f\n", afferent_input);
+
+		afferent_input += this->lateral_afferents[c1]->get_lateral_v()  * this->get_lateral_afferent_weight()[c1];
 	}
 
 //    dv_Pyr 	= i_Pyr;
@@ -93,7 +95,7 @@ void Mass_CA1_Lumped::update_ode(){
 
     dv_E 	= i_E;
     di_E 	= A*a*(p+ this->get_stimulation() + C2*Sigma::spike_density(C1*v_Pyr + afferent_input ) ) - 2*a*i_E - a*a*v_E;
-
+       
     dv_IS1 	= i_IS1;
     di_IS1 	= B*b*C4*(Sigma::spike_density(C3*v_Pyr )) - 2*b*i_IS1 - b*b*v_IS1;
 
@@ -108,6 +110,7 @@ void Mass_CA1_Lumped::update_ode(){
 }
 
 void Mass_CA1_Lumped::update_state(double dt){
+//     mexPrintf("dt = %f\n", dt);
 	v_Pyr 	+= dv_Pyr*dt ;
 	i_Pyr 	+= di_Pyr*dt;
 	v_E 	+= dv_E*dt;
