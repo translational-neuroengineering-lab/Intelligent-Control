@@ -56,9 +56,5 @@ if toc > n_samples/f_sample
         tic % Update refractory counter
     end
 end
-
-if display
-   realtime_spectrogram(TD, data_buffer, read_channel) 
-end
-    
+   
 end
