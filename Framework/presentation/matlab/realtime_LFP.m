@@ -1,6 +1,6 @@
 function realtime_LFP( TD, data_buffer, ~ )
 
-read_channel = 2;
+read_channel = 1;
 f_sample = TD.FS{1};
 
 t = double((1:data_buffer.lst-data_buffer.fst+1))/f_sample;

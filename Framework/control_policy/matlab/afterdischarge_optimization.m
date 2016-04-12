@@ -12,6 +12,11 @@ classdef afterdischarge_optimization < handle
         c_scale_range
         scale_point
         
+        f_stimulation_static
+        duration_static
+        amplitude_static
+        width_static
+        
         % Timing parameters
         run_start_time_s
         cycle_start_time_s
@@ -37,13 +42,18 @@ classdef afterdischarge_optimization < handle
             obj.c_scale_range           = [0.5 2];
             obj.scale_point             = 732;
             
+            obj.f_stimulation_static    = 20;
+            obj.duration_static         = 2;
+            obj.amplitude_static        = 16;
+            obj.width_static            = 0.001;
+            
             obj.run_start_time_s        = posixtime(datetime);
             obj.cycle_start_time_s      = posixtime(datetime);
             obj.last_time_s             = posixtime(datetime);
             obj.this_time_s             = posixtime(datetime);
             
-            obj.stimulation_time_s      = 150;
-            obj.evaluate_time_s         = 300;
+            obj.stimulation_time_s      = 5;
+            obj.evaluate_time_s         = 10;
             
             obj.fid                     = fopen('afterdischarge_optimization_log.csv','a');
         end
@@ -57,7 +67,7 @@ classdef afterdischarge_optimization < handle
             global_time_s = obj.this_time_s - obj.run_start_time_s;
             last_time = obj.last_time_s - obj.cycle_start_time_s;
             
-            fprintf('(t = %4.1f) ', global_time_s)
+            fprintf('Global time = %4.1f, This time = %4.1f) ', global_time_s, this_time)
 
             if this_time < obj.stimulation_time_s
                 
@@ -73,10 +83,14 @@ classdef afterdischarge_optimization < handle
                    && last_time < obj.stimulation_time_s
                
                 fprintf('STIMULATE!!!\n');
-                get_random_stimulation_signal(obj,TD);
+                beep
+                signal = get_static_stimulation_signal(obj);
+                write_signal(TD, obj.stim_channel, signal);
+%                 stimulate_and_wait(TD, obj.stim_channel);
+                stimulate(TD);
+%                 open_channels(TD, obj.stim_channel);
 
             end
-
 
             if this_time > obj.evaluate_time_s ...
                && last_time < obj.evaluate_time_s
@@ -87,7 +101,6 @@ classdef afterdischarge_optimization < handle
 
             end
            
-          
         end
         
         function obj = reset_time(obj)
@@ -96,8 +109,7 @@ classdef afterdischarge_optimization < handle
             obj.this_time_s          = posixtime(datetime);
         end
         
-        function signal = get_random_stimulation_signal(obj,TD)
-            
+        function scaled_signal = get_random_stimulation_signal(obj,TD)
             
             % Determine stimulation parameters    
             f_stimulation_r     = obj.f_stimulation_range(1) + (obj.f_stimulation_range(2) - obj.f_stimulation_range(1))*rand();
@@ -112,10 +124,6 @@ classdef afterdischarge_optimization < handle
             scaled_signal       = c_scale_r*(obj.scale_point/c_unscaled)*unscaled_signal;
             scale_pow           = sum(abs(scaled_signal));
 
-            % Deliver stimulation signal
-            write_signal(TD, obj.stim_channel, scaled_signal);
-            stimulate_and_wait(TD, obj.stim_channel);
-            open_channels(TD, obj.stim_channel);
 
             % Log stimulation data
             fprintf(obj.fid,'%f,', obj.run_start_time_s);
@@ -147,13 +155,27 @@ classdef afterdischarge_optimization < handle
                 duration_r          = obj.duration_range(1) + (obj.duration_range(1) + obj.duration_range(2))*rand();
                 amplitude_r         = obj.amplitude_range(1) + (obj.amplitude_range(1) + obj.amplitude_range(2))*rand();
                 width_r             = obj.width_range(1) + (obj.width_range(1) + obj.width_range(2))*rand();
-                
+                unscaled_signal     = generate_biphasic(obj.f_sample, f_stimulation_r, duration_r, amplitude_r, width_r);
+
                 fprintf('f_stimulation_r = %f\n duration_r = %f\n amplitude_r = %f\n width_r = %f\n' ...
                     ,f_stimulation_r, duration_r, amplitude_r, width_r);
             else
                 % Optimization code here
             end
             
+        end
+        
+        
+        function signal = get_static_stimulation_signal(obj)
+            
+            f_stimulation     = obj.f_stimulation_static;
+            duration          = obj.duration_static;
+            amplitude         = obj.amplitude_static;
+            width             = obj.width_static;
+
+            signal = generate_biphasic(obj.f_sample, f_stimulation, duration, amplitude, width);
+            fprintf('f_stimulation = %f\n duration = %f\n amplitude = %f\n width = %f\n' ...
+                ,f_stimulation, duration, amplitude, width);
         end
     end
     

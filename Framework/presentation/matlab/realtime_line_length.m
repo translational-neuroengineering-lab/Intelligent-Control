@@ -2,7 +2,7 @@ function realtime_line_length(TD, data_buffer, ~  )
 %REALTIME_LINE_LENGTH Summary of this function goes here
 %   Detailed explanation goes here
 
-read_channel = 2;
+read_channel = 1;
 
 f_sample = TD.FS{1};
 

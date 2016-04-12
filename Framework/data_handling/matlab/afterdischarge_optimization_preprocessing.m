@@ -1,8 +1,8 @@
 function afterdischarge_optimization_preprocessing( )
 fs = 6103;
 
-fid = fopen('afterdischarge_optimization_log.csv');
-C = textscan(fid,'%f %f %f %s %f %f %f %f %f %f','Delimiter',',');
+fid = fopen('data/ARN038_pre_stimulation_dataset/afterdischarge_optimization_log_ARN038.csv');
+C = textscan(fid,'%f %f %f %s %f %f %f %f %f %f','Delimiter',',','headerlines', 1);
 fclose(fid);
 
 run_cycle_time = C{1};
@@ -36,10 +36,10 @@ for c1 = 1:53
     
     
 %     data = data_all(:,segment_start:stim_start);
-    data = data_all(:,stim_end:segment_end);
+%     data = data_all(:,stim_end:segment_end);
     
-    save(['/Users/mconnolly/Dropbox/Intelligent Control Repository/data/ARN038_post_stimulation_dataset/' ...
-         sprintf('ARN038_poststimulation_10s_segment-%d',c1)], 'data')
+%     save(['/Users/mconnolly/Dropbox/Intelligent Control Repository/data/ARN038_post_stimulation_dataset/' ...
+%          sprintf('ARN038_poststimulation_10s_segment-%d',c1)], 'data')
 %     save(['/Users/mconnolly/Dropbox/Intelligent Control Repository/data/ARN038_pre_stimulation_dataset/' ...
 %          sprintf('ARN038_prestimulation_10s_segment-%d',c1)], 'data')
 end
