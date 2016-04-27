@@ -6,6 +6,8 @@ function stim_matrix = generate_asynchronous(sampling_frequency,     ...
                                 n_channels)
 
 stim_order  = randperm(n_channels);
+stim_order  = [1 5 2 6 3 7 4 8];
+
 s           = generate_biphasic(sampling_frequency, stimulation_frequency/n_channels, duration*n_channels, amplitude, pulse_width);
 stim_matrix = zeros(n_channels,size(s,2));
 
