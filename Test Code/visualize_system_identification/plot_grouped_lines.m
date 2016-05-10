@@ -7,7 +7,7 @@ groups      = unique(grouping_variable);
 variable    = unique(independent_variable);
 min_var     = min(variable);
 max_var     = max(variable);
-offsets     = (-1*(size(groups,1)-1)/2:(size(groups,1)-1)/2)*2;
+offsets     = (-1*(size(groups,1)-1)/2:(size(groups,1)-1)/2)*.1;
 
 if figure_flag
     figure; 

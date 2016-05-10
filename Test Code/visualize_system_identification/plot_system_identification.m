@@ -6,11 +6,54 @@ file_name = 'temp_results/UG3_preliminary_system_id.mat';
 
 load(file_name);
 
-plot_correlation(file_name);
-plot_mutual_information(file_name);
-plot_spectral_power(file_name);
-plot_coherence(file_name);
+plot_correlation_durration(file_name);
+% plot_mutual_information(file_name);
+% plot_spectral_power(file_name);
+% plot_coherence(file_name);
 
+end
+function plot_correlation_durration(file_name)
+
+layer_parameters    = [];
+correlation_metrics = [];
+
+load(file_name)
+
+% DURATIONS       = unique(layer_parameters(:,2));
+LAYERS          = unique(layer_parameters(:,6));
+FREQUENCIES     = unique(layer_parameters(:,1));
+% n_durations     = size(DURATIONS,1);
+n_layers        = size(LAYERS,1);
+n_frequencies   = size(FREQUENCIES,1);
+
+x_label         = 'Duration';
+y_label         = 'Correlation Coefficient';
+% group_label     = {'Baseline', 'Synchronous','Asynchronous - High Frequency'};
+group_label     = {};
+figure_flag     = 0;
+figure;
+for c1 = 1:n_frequencies
+        
+    for c2 = 1:n_layers
+        subplot(5,4,(c1-1)*n_layers-c2+n_layers+1);
+        
+%         duration_index  = find(layer_parameters(:,2) == DURATIONS(c1));
+        frequency_index  = find(layer_parameters(:,1) == FREQUENCIES(c1));
+        layer_index     = find(layer_parameters(:,6)  == LAYERS(c2));
+
+        index           = intersect(frequency_index, layer_index);
+
+        plot_grouped_lines(correlation_metrics(index,1), layer_parameters(index,2), ...
+            layer_parameters(index,5), y_label , x_label, group_label, figure_flag, ...
+            correlation_baseline)
+        
+        title(sprintf('Layer %d, Frequency %.1fs', LAYERS(c2), FREQUENCIES(c1)));
+    end
+end
+
+screenSize = get(0,'Screensize');
+set(gcf, 'Position', [1 1 screenSize(3) screenSize(4)]);
+% hgexport(gcf,sprintf('temp_results/correlation.eps'));
 end
 
 function plot_correlation(file_name)
