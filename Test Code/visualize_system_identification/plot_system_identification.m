@@ -2,17 +2,38 @@ function plot_system_identification
 %PLOT_ Summary of this function goes here
 %   Detailed explanation goes here
 
-file_name = 'temp_results/UG3_preliminary_system_id.mat';
+RA16_ZCH_matrix = [4,3,2,1,5,6,7,8];
+results_dir = '/Users/mconnolly/Intelligent Control Repository/results/ARN038_Grid_Search_MainDataTank_Block-64';
 
-load(file_name);
+stimulation = readtable([results_dir '/stimulation.csv'],'ReadVariableNames',false)
 
-plot_correlation_durration(file_name);
+start_time  = csvread([results_dir '/start_time.csv']);
+
+plot_grouped_lines(Y, x1, x2, y_label , x1_label, x2_label, ...
+       figure_flag, Y_baseline)
+% plot_correlation_duration(file_name);
 % plot_mutual_information(file_name);
 % plot_spectral_power(file_name);
 % plot_coherence(file_name);
 
 end
-function plot_correlation_durration(file_name)
+
+function plot_spatial(Y, x1,x2,spatial_matrix, y_label, x1_label, x2_labels)
+    
+n_x1    = unique(x1);
+n_x2    = unique(x2);
+n_plots = numel(spatial_matrix);
+
+for c1 = 1:n_plots
+   subplot(size(spatial_matrix),c1)
+   plot_grouped_lines(Y, x1, x2, y_label , x1_label, x2_label, ...
+       figure_flag, Y_baseline)
+end
+
+
+
+end
+function plot_correlation_duration(file_name)
 
 layer_parameters    = [];
 correlation_metrics = [];
