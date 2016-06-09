@@ -1,7 +1,10 @@
-function stimulate(TD)
+function stimulate(TD, device_name)
 
-% disp('triggering stim')
-TD.trig('trig_stim');
+
+% TD.trig('trig_stim');
+TD.SetTargetVal([device_name '.trig_stim'], 1);
+pause(.1)
+TD.SetTargetVal([device_name '.trig_stim'], 0);
 
 end
 
