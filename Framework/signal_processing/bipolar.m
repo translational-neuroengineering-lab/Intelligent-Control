@@ -1,4 +1,4 @@
-classdef pass_through
+classdef bipolar
     %PASS_THROUGH Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -12,16 +12,16 @@ classdef pass_through
         sampling_frequency
         
         buffer_duration
-        channel
+        channels
         
         log_file
         fid
     end
     
     methods
-        function obj = pass_through(TD_FS, channel, logging_directory)
+        function obj = bipolar(TD_FS, channels, logging_directory)
             obj.sampling_frequency          = TD_FS;
-            obj.channel                     = channel;
+            obj.channels                     = channels;
             
             obj.DATA_BUFFER_DURRATION       = 10;
             obj.DATA_VEC_SIZE               = 1;
@@ -29,14 +29,16 @@ classdef pass_through
             obj.DATA_BUFFER                 = circVBuf(int64(obj.DATA_BUFFER_SIZE),...
                                             int64(obj.DATA_VEC_SIZE), 0);
             
-            obj.log_file                    = sprintf('%s/pass_through_channel_%d.csv',...
-                                            logging_directory, channel);
+            obj.log_file                    = sprintf('%s/bipolar_channels_%d_%d.csv',...
+                                            logging_directory, channels);
             obj.fid                         = fopen(obj.log_file, 'a');
-            obj.name                        = 'Pass Through';
+            obj.name                        = 'Bipolar Pass Through';
         end
         
         function update_buffer(obj, new_data)
-            obj.DATA_BUFFER.append(new_data(:,obj.channel));
+            new_data = new_data - repmat(mean(new_data),size(new_data,1),1);
+            new_data = new_data - repmat(std(new_data),size(new_data,1),1);
+            obj.DATA_BUFFER.append(new_data(:,obj.channels(1))-new_data(:,obj.channels(2)));
         end
         
         function m = get_metric(obj, duration)
