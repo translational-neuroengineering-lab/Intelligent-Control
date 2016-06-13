@@ -1,13 +1,16 @@
-function plot_grouped_lines( Y, independent_variable, grouping_variable,...
-        y_label, x_label, group_label, figure_flag, control_data, error_mode )
+function plot_grouped_lines( Y, x1, grouping_variable,...
+        y_label, x1_label, x2_label, figure_flag, control_data, error_mode )
 %PLOT_STIMULATION_EFFECT Summary of this function goes here
 %   Detailed explanation goes here
+load('Tools/default_color_order.mat');
 
 groups      = unique(grouping_variable);
-variable    = unique(independent_variable);
+variable    = unique(x1);
 min_var     = min(variable);
 max_var     = max(variable);
-offsets     = (-1*(size(groups,1)-1)/2:(size(groups,1)-1)/2)*.1;
+offsets     = (-1*(size(groups,1)-1)/2:(size(groups,1)-1)/2)*.002*(max_var-min_var);
+
+n_groups    = numel(groups);
 
 if figure_flag
     figure; 
@@ -18,6 +21,7 @@ if ~exist('error_mode', 'var') || isempty(error_mode)
     error_mode = 'std';
 end
 
+% Plot control patch
 if exist('control_data', 'var') && ~isempty(control_data)
     mean_control    = mean(control_data);
     
@@ -35,14 +39,15 @@ if exist('control_data', 'var') && ~isempty(control_data)
         [lower_lim, upper_lim, upper_lim, lower_lim],  ones(1,3)*.9, 'EdgeColor', 'none')
 end
 
+% Plot grouped errorbars
 for c1 = 1:size(groups,1)
     
-    x_values    = unique(independent_variable(grouping_variable == groups(c1)));
+    x_values    = unique(x1(grouping_variable == groups(c1)));
     means       = nan(size(x_values));
     err         = nan(size(x_values));
     
     for c2 = 1:size(x_values,1)
-        point_data  = Y(grouping_variable == groups(c1) & independent_variable == x_values(c2));
+        point_data  = Y(grouping_variable == groups(c1) & x1 == x_values(c2));
         
         means(c2)   = mean(point_data);
         
@@ -56,22 +61,36 @@ for c1 = 1:size(groups,1)
         
     end
     
-    errorbar(x_values+offsets(c1), means, err, 'LineWidth', 2);
+    plot(x_values+offsets(c1), means,  'LineWidth', 2,'color', default_color_order(c1,:))
+    errbar(x_values+offsets(c1), means, err, 'LineWidth', 2, 'color', default_color_order(c1,:));
     ax = gca;
     ax.Layer = 'top';
+
 end
 
+% Set labels
 if exist('y_label', 'var')
-    ylabel(y_label,'FontSize', 16)
+    ylabel(strrep(y_label,'_', ' '),'FontSize', 16)
 end
 
-if exist('x_label', 'var')
-    xlabel(x_label,'FontSize', 16)
+if exist('x1_label', 'var')
+    xlabel(strrep(x1_label,'_', ' '),'FontSize', 16)
 end
 
-if exist('group_label', 'var')
-    legend(group_label);
+if exist('x2_label', 'var')
+    legend_labels = cell(1,n_groups);
+    
+    for c1 = 1:n_groups
+        legend_labels{c1} = sprintf('%s: %.1f', strrep(x2_label,'_', ' '), groups(c1));
+    end
+    
+    if exist('control_data', 'var') && ~isempty(control_data)
+        legend_labels = [legend_labels 'control'];
+    end
+    
+    legend(legend_labels);
 end
 
-xlim([min([min_var 1]), max_var*1.1])
+% Adjust limits
+xlim([min_var+offsets(1)*2, max_var+offsets(end)*2]);
 end
