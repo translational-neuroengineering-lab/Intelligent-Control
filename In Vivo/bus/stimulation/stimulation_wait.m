@@ -4,7 +4,7 @@ function stimulation_wait(TD, channels)
 
 n_channels = size(channels,1);
 
-disp('waiting for stim to complete')
+% disp('waiting for stim to complete')
 while 1
     v = 0;
     for c1 = 1:n_channels
@@ -16,6 +16,6 @@ while 1
     pause(.1)
 end
 
-disp('stim done')
+% disp('stim done')
 end
 
