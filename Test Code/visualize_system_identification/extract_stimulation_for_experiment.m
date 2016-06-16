@@ -24,8 +24,8 @@ for c1 = 1:size(experiment.stimulation_table,1)
          segment_start  = stimulation_end + segment_offset;
          segment_end    = segment_start + segment_duration;
     elseif segment_offset < 0
-        segment_end     = stimulation_start + segment_offset;
-        segment_start   = segment_end - segment_duration;
+        segment_start   = stimulation_start + segment_offset;
+        segment_end    = segment_start + segment_duration;
     else
         segment_start   = stimulation_start;
         segment_end     = segment_start + segment_duration;
